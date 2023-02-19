@@ -1,5 +1,5 @@
 const { Client, GatewayIntentBits } = require('discord.js');
-
+require("dotenv").config();
 const statusList = require("./statusList.json")
 const client = new Client(
     {
@@ -24,8 +24,9 @@ function getRandomInt(max) {
 }
 const { Player } = require("discord-player");
 const player = new Player(client);
-player.on("trackStart", (queue, track) => {
- 
+
+player.events.on("trackStart", (queue, track) => {
+ console.log("Next Track")
 })
 
 
@@ -51,6 +52,8 @@ client.on('messageCreate', async (message) => {
           require("./musicStop.js")(message, client, player)
         } else if (message.content.toLowerCase().startsWith("不想聽了")) {
            require("./musicSkip.js")(message, client, player)
+        } else if (message.content.toLowerCase().startsWith("設定特效")) { 
+            require("./filter.js")(message, client, player)
         }
     } catch (err) {
         message.reply("你把我搞壞了,信不信我真實你")

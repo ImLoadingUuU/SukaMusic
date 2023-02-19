@@ -6,43 +6,38 @@
 
 
 
-module.exports = async (msg,client,player) => {
-    if(!msg.member.voice.channel) {
-        return msg.channel.send("傻逼你沒進語音頻道")
-    }
-   let queue = player.createQueue(msg.guild,{
-    metadata: msg.member.voice.channel,
-     volumeSmoothness: true,
-         ytdlOptions: {
-        quality: "highest",
-        filter: "audioonly",
-      },
-   })
-   try {
-    if (!queue.connection) await queue.connect(msg.member.voice.channel);
-    const track = await player.search(msg.content.slice(2), {
-        requestedBy: msg.author
-    }).catch((err) =>{
-      console.log(err)
-      return msg.reply({
-        content: "爆炸了"})
-    })
-     
-    if (!track) return await msg.reply({ content: `❌ | 你傻逼啊,找不到 **${msg.content.slice(2)}** !` });
- track.playlist ? queue.addTracks(track.tracks) : queue.addTrack(track.tracks[0]);
-        if (!queue.playing) {
-          queue.play()
+module.exports = async (msg, client, player) => {
+  if (!msg.member.voice.channel) {
+    return msg.channel.send("傻逼你沒進語音頻道")
+  }
+
+  try {
+
+    try {
+      const res = await player.play(msg.member.voice.channel, msg.content.slice(2), {
+        nodeOptions: {
+          metadata: {
+            channel: msg.member.voice.channel
+          },
+          volumeSmoothness: true,
+          ytdlOptions: {
+            quality: "highest",
+            filter: "audioonly",
+          },
         }
+      });
 
-     console.log("Playerd")
+      return await msg.reply({ content: `⏱️ | 載入中嘟嘟嘟 **${res.track.title}**!` });
+    } catch (e) {
+      return await msg.reply({ content: `出錯了！！: ${e.message}`, ephemeral: true });
+    }
 
-     return await msg.reply({ content: `⏱️ | 開始播放! ${track.tracks[0].title}` });
-} catch (m){
+  } catch (m) {
     queue.destroy();
     console.log(m)
     return await msg.reply("幹嘛？");
-}
-       
-          
-    
   }
+
+
+
+}

@@ -7,10 +7,10 @@
 
 
 module.exports = async (msg,client,player) => {
-    const queue = player.getQueue(msg.guildId); 
+  const queue = player.nodes.get(msg.guildId); 
 
     if (queue  && msg.client.voice ) {
-    queue.stop(); 
+    queue.node.stop(); 
     msg.reply("已停止播放")
       }  else {
         msg.reply("沒有在播放")

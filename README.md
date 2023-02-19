@@ -1,1 +1,2 @@
-# hi this is terrible
+# SukaMusic
+Powered by Discord-Player 6

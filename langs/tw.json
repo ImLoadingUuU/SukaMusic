@@ -1,0 +1,5 @@
+{
+    "errorType_notFound": "找不到",
+    "errorType_filterError": "過濾器錯誤",
+    "errorType_unknownFilter": "未知的過濾器"
+}
