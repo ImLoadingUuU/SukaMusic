@@ -13,7 +13,7 @@ module.exports = async (msg,client,player) => {
    let queue = player.createQueue(msg.guild,{
     metadata: msg.member.voice.channel,
      volumeSmoothness: true,
-         ytdlDownloadOptions: {
+         ytdlOptions: {
         quality: "highest",
         filter: "audioonly",
       },
