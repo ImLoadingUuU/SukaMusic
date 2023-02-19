@@ -10,8 +10,7 @@ module.exports = async (msg,client,player) => {
     const queue = player.getQueue(msg.guildId); 
 
     if (queue  && msg.client.voice ) {
- 
-    msg.reply("跳過了傻逼")
+        
       }  else {
         msg.reply("沒有在播放")
       }
