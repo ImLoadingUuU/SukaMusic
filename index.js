@@ -44,15 +44,16 @@ client.on('ready', async () => {
 client.on('messageCreate', async (message) => {
 
     try {
-        if (message.content.toLowerCase().startsWith('獲取狀態來自')) {
+      let lowered = message.content.toLowerCase()
+        if (lowered.startsWith('獲取狀態來自')) {
             require("./getStatus.js")(message, client)
-        } else if (message.content.toLowerCase().startsWith("播放")) {
-            require("./music.js")(message, client, player)
-        } else if (message.content.toLowerCase().startsWith("閉嘴")) {
+        } else if (lowered.startsWith("播放")) {
+            require("./musicPlay.js")(message, client, player)
+        } else if (lowered.startsWith("閉嘴")) {
           require("./musicStop.js")(message, client, player)
-        } else if (message.content.toLowerCase().startsWith("不想聽了")) {
+        } else if (lowered.startsWith("不想聽了")) {
            require("./musicSkip.js")(message, client, player)
-        } else if (message.content.toLowerCase().startsWith("設定特效")) { 
+        } else if (lowered.startsWith("設定特效")) { 
             require("./filter.js")(message, client, player)
         }
     } catch (err) {

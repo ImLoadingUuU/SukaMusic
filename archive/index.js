@@ -62,4 +62,4 @@ client.on('messageCreate', async (message) => {
 
 
 client.login(process.env.t);
-require("./plugins/onlineForever.js")
+require("./plugins/onlineForever.js.js")

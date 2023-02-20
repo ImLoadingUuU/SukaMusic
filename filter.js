@@ -26,22 +26,9 @@ module.exports = async (msg, client, player) => {
       embed.setTimestamp();
       
        prevMessage = await msg.reply({ embeds: [embed] });
+
       try {
-       
-          switch (fields[1].toLowerCase()) {
-            case "nightcore" || "nc":
-               queue.filters.ffmpeg.toggle(["nightcore"]);
-               
-            case "bassboost" || "bb":
-               queue.filters.ffmpeg.toggle(["bassboost"]);
-               
-            case "8d":
-               queue.filters.filters.setFilters(['8D']);
-            
-            
-            
-          }
-        
+       async function  end () {
         const embed = new EmbedBuilder();
         embed.setAuthor({
           name: "坤坤音樂",
@@ -53,6 +40,28 @@ module.exports = async (msg, client, player) => {
         });
         embed.setTimestamp();
        await prevMessage.edit({ embeds: [embed] })
+       }
+          switch (fields[1].toLowerCase()) {
+            case "nightcore" || "nc":
+               queue.filters.ffmpeg.toggle(["nightcore"]);
+               return end()
+               
+            case "bassboost" || "bb":
+               queue.filters.ffmpeg.toggle(["bassboost"]);
+              return end()
+               
+            case "8d":
+               queue.filters.filters.setFilters(['8D']);
+               return end()
+          case "karaoke" | "ko":
+                queue.filters.ffmpeg.toggle(['karaoke']);
+           return end()
+          
+            
+            
+          }
+        
+      
        
       } catch (err) {
         const embed = new EmbedBuilder();
