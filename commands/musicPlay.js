@@ -24,7 +24,7 @@ module.exports = {
   
       try {
         if(!sliced[1].startsWith("apm:")) {
-          const res = await player.play(msg.member.voice.channel, msg.content.slice(2), {
+          const res = await player.play(msg.member.voice.channel, args.slice(1).join(" "), {
             nodeOptions: {
               metadata: {
                 channel: msg.member.voice.channel

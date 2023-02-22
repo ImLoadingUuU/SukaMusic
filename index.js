@@ -1,6 +1,7 @@
 // Formatted by ChatGPT
 // 引入必要的庫
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
+
 const { Player } = require('discord-player');
 const Logger = require('./libs/logger-v5/logger.js');
 const { REPL_OWNER, REPL_SLUG } = process.env
@@ -56,7 +57,6 @@ bot.player = player;
 bot.botLog = botLogger;
 bot.processLog = processLogger;
 bot.dir = __dirname;
-
 // 监听 ready 事件，表示客户端已准备好
 bot.on('ready', async () => {
   bot.botLog.ok(`Logged in as ${bot.user.tag}`);
@@ -89,6 +89,7 @@ bot.on("messageCreate",async (msg) => {
         c.execute(bot,msg,splited)
     }
 })
+
 
 bot.login(config.bot.token === "use-env" ? process.env.t : config.bot.token);
 // require("./plugins/onlineForever.js")
