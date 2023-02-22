@@ -24,10 +24,20 @@ function getRandomInt(max) {
 }
 const { Player } = require("discord-player");
 const player = new Player(client);
+const commands = {}
 
-player.events.on("trackStart", (queue, track) => {
- console.log("Next Track")
+
+// read all files in commands
+let overwritedCommands = [
+   
+]
+require("fs").readdirSync(__dirname + "/commands").forEach(function(file) {
+ if (typeof(require(file)) !== "object") {
+     console.log("Commands Loader WARN - " + file + " is not a command object.")
+ }
+ 
 })
+
 
 
 client.on('ready', async () => {
@@ -41,20 +51,21 @@ client.on('ready', async () => {
     });
 });
 
+
 client.on('messageCreate', async (message) => {
 
     try {
       let lowered = message.content.toLowerCase()
         if (lowered.startsWith('獲取狀態來自')) {
-            require("./getStatus.js")(message, client)
+            require("./commands/getStatus.js")(message, client)
         } else if (lowered.startsWith("播放")) {
-            require("./musicPlay.js")(message, client, player)
+            require("./commands/musicPlay.js")(message, client, player)
         } else if (lowered.startsWith("閉嘴")) {
-          require("./musicStop.js")(message, client, player)
+          require("./commands/musicStop.js")(message, client, player)
         } else if (lowered.startsWith("不想聽了")) {
-           require("./musicSkip.js")(message, client, player)
+           require("./commands/musicSkip.js")(message, client, player)
         } else if (lowered.startsWith("設定特效")) { 
-            require("./filter.js")(message, client, player)
+            require("./commands/filter.js")(message, client, player)
         }
     } catch (err) {
         message.reply("你把我搞壞了,信不信我真實你")

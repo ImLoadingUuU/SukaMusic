@@ -24,11 +24,11 @@ module.exports = async (msg, client, player) => {
         text: "坤坤音樂 2023  - 過濾器功能",
       });
       embed.setTimestamp();
-      
-       prevMessage = await msg.reply({ embeds: [embed] });
 
-      try {
-       async function  end () {
+      prevMessage = await msg.reply({ embeds: [embed] });
+
+
+      async function end() {
         const embed = new EmbedBuilder();
         embed.setAuthor({
           name: "坤坤音樂",
@@ -39,44 +39,34 @@ module.exports = async (msg, client, player) => {
           text: "坤坤音樂 2023  - 過濾器功能",
         });
         embed.setTimestamp();
-       await prevMessage.edit({ embeds: [embed] })
-       }
-          switch (fields[1].toLowerCase()) {
-            case "nightcore" || "nc":
-               queue.filters.ffmpeg.toggle(["nightcore"]);
-               return end()
-               
-            case "bassboost" || "bb":
-               queue.filters.ffmpeg.toggle(["bassboost"]);
-              return end()
-               
-            case "8d":
-               queue.filters.filters.setFilters(['8D']);
-               return end()
-          case "karaoke" | "ko":
-                queue.filters.ffmpeg.toggle(['karaoke']);
-           return end()
-          
-            
-            
-          }
-        
-      
-       
-      } catch (err) {
-        const embed = new EmbedBuilder();
-        embed.setAuthor({
-          name: "坤坤音樂",
-        });
-        embed.setTitle("未知的過濾器");
-        embed.setColor("#831100");
-        embed.setDescription(err)
-        embed.setFooter({
-          text: "坤坤音樂 2023",
-        });
-        embed.setTimestamp();
         await prevMessage.edit({ embeds: [embed] })
       }
+      switch (fields[1].toLowerCase()) {
+        case "nightcore":
+          queue.filters.ffmpeg.toggle(["nightcore"]);
+          end()
+          break;
+        case "bassboost":
+          queue.filters.ffmpeg.toggle(["bassboost"]);
+          end()
+          break;
+        case "8d":
+          queue.filters.filters.setFilters(['8D']);
+          end()
+          break;
+        case "karaoke":
+          queue.filters.ffmpeg.toggle(['karaoke']);
+          end()
+          break;
+        default:
+          msg.reply("沒有這個過濾器")
+          break;
+
+      }
+
+
+
+
     } else {
       msg.reply("沒有在播放")
     }

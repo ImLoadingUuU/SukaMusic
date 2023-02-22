@@ -1,5 +1,14 @@
 {
  "plugins": [
    "onlineForever.js"
- ]
+ ],
+ "permission_help": "Permission? Theres all Permission you can use! overwriteCommand,modifyCore,modifyDatastore,createCommand,all",
+ "permission_help_zh": "所有的權限可使用 overwriteCommand (替換指令),modifyCore(修改核心),modifyDatastore(修改資料庫),createCommand(建立指令),all(所有)",
+ "permission": {
+
+   "onlineForever": [
+    
+
+   ]
+ }
 }
