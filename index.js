@@ -55,11 +55,25 @@ for (const file of commandFiles) {
 	const command = require(filePath);
 	// Set a new item in the Collection with the key as the command name and the value as the exported module
 	if ('aliases' in command && 'execute' in command) {
-		bot.commands.set(command.aliases, command);
+
         bot.botLog.ok(`Loaded Command "${command.name}" from ${filePath}`)
+        for (let alias of command.aliases) {
+            bot.commands.set(alias, command)
+            bot.botLog.info(`Registerd ${alias} as an alias for "${command.name}"`)
+        }
 	} else {
 		bot.botLog.warn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
 	}
 }
+
+bot.on("messageCreate",async (msg) => {
+    let content = msg.content.toLowerCase()
+    let splited = content.split(" ")
+    let c = bot.commands.get(splited[0])
+    if(c && msg.author.id !== bot.user.id){
+        c.execute(bot,msg,splited)
+    }
+})
+ 
 bot.login(process.env.t);
 // require("./plugins/onlineForever.js")
