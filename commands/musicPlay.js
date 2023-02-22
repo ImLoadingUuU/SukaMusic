@@ -1,4 +1,4 @@
-const req = require('express/lib/request')
+
 
 /**
  * @param {import('discord.js').Message} msg - Discord 消息对象
