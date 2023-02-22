@@ -10,7 +10,7 @@ require("fs").readdirSync(__dirname + "/plugins").forEach(function(file) {
      for (let i = 0; i < permissionLists.length; i++) {
         if (config.permission[res.id][permissionLists[i]] == undefined) {
             config.permission[res.id][permissionLists[i]] = false;
-            console.log("Permission Error")
+            console.log("Permission Error ")
         }
      }
     } else {

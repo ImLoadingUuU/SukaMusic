@@ -1,78 +1,65 @@
-const { Client, GatewayIntentBits } = require('discord.js');
-require("dotenv").config();
-const statusList = require("./statusList.json")
-const client = new Client(
-    {
-        intents: [
-            GatewayIntentBits.GuildMessages,
-            GatewayIntentBits.GuildVoiceStates,
-            GatewayIntentBits.Guilds,
-            GatewayIntentBits.GuildMessageReactions,
-            GatewayIntentBits.GuildMessageTyping,
-            GatewayIntentBits.GuildMembers,
-            GatewayIntentBits.MessageContent,
-            GatewayIntentBits.GuildPresences
-            
-     
-        ],
-        partials: [
-            'CHANNEL', // Required to receive DMs
-        ]
-    });
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+// Formatted by ChatGPT
+// 引入必要的庫
+const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const { Player } = require('discord-player');
+const Logger = require('./libs/logger-v5/logger.js');
+const dotenv = require('dotenv');
+const path = require('path');
+const fs = require("fs")
+// 載入環境變數
+dotenv.config();
+
+// 創建日誌記錄器
+const botLogger = new Logger('Bot', true, [], 8);
+const processLogger = new Logger('Process', true, [], 8);
+
+// 启动日志
+botLogger.ok('Starting Bot');
+processLogger.ok('Starting Process');
+
+// 初始化 Discord 客戶端
+const bot = new Client({
+  intents: [
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.GuildMessageTyping,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildPresences,
+  ],
+  partials: ['CHANNEL'], // 必需接收私人訊息
+});
+
+// 初始化音频播放器
+const player = new Player(bot);
+
+// 設置客戶端的變量
+bot.commands = new Collection();
+bot.player = player;
+bot.botLog = botLogger;
+bot.processLog = processLogger;
+bot.dir = __dirname;
+
+// 监听 ready 事件，表示客户端已准备好
+bot.on('ready', async () => {
+  bot.botLog.ok(`Logged in as ${bot.user.tag}`);
+});
+
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const filePath = path.join(commandsPath, file);
+	const command = require(filePath);
+	// Set a new item in the Collection with the key as the command name and the value as the exported module
+	if ('aliases' in command && 'execute' in command) {
+		bot.commands.set(command.aliases, command);
+        bot.botLog.ok(`Loaded Command "${command.name}" from ${filePath}`)
+	} else {
+		bot.botLog.warn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
+	}
 }
-const { Player } = require("discord-player");
-const player = new Player(client);
-const commands = {}
-
-
-// read all files in commands
-let overwritedCommands = [
-   
-]
-require("fs").readdirSync(__dirname + "/commands").forEach(function(file) {
- if (typeof(require(file)) !== "object") {
-     console.log("Commands Loader WARN - " + file + " is not a command object.")
- }
- 
-})
-
-
-
-client.on('ready', async () => {
-    console.log(`Logged in as ${client.user.tag}`);
-    client.user.setPresence({
-        status: 'online',
-        activities: {
-            name: '籃球',
-            type: 'PLAYING'
-        }
-    });
-});
-
-
-client.on('messageCreate', async (message) => {
-
-    try {
-      let lowered = message.content.toLowerCase()
-        if (lowered.startsWith('獲取狀態來自')) {
-            require("./commands/getStatus.js")(message, client)
-        } else if (lowered.startsWith("播放")) {
-            require("./commands/musicPlay.js")(message, client, player)
-        } else if (lowered.startsWith("閉嘴")) {
-          require("./commands/musicStop.js")(message, client, player)
-        } else if (lowered.startsWith("不想聽了")) {
-           require("./commands/musicSkip.js")(message, client, player)
-        } else if (lowered.startsWith("設定特效")) { 
-            require("./commands/filter.js")(message, client, player)
-        }
-    } catch (err) {
-        message.reply("你把我搞壞了,信不信我真實你")
-        console.log(err)
-    }
-});
-
-
-client.login(process.env.t);
-require("./plugins/onlineForever.js")
+bot.login(process.env.t);
+// require("./plugins/onlineForever.js")

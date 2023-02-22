@@ -6,8 +6,13 @@
 
 
 
-module.exports = async (msg,client,player) => {
-  const queue = player.nodes.get(msg.guildId); 
+
+module.exports = {
+  name: "Skip The Musics",
+  description: "Skip The Music",
+  aliases: ["skip","跳過","不想聽了"],
+  execute: async (msg,client,player) => {
+    const queue = player.nodes.get(msg.guildId); 
 
     if (queue  && msg.client.voice ) {
     queue.node.skip(); 
@@ -15,4 +20,6 @@ module.exports = async (msg,client,player) => {
       }  else {
         msg.reply("沒有在播放")
       }
-    }
+
+  }
+}

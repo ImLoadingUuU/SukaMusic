@@ -2,7 +2,7 @@
  * @param {import('discord.js').Message} message - Discord 消息对象
  * @param {import('discord.js').Client} client - Discord 客户端对象
  */
-const statusList = require("./statusList.json")
+const statusList = require("../statusList.json")
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
