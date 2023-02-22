@@ -3,11 +3,12 @@
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const { Player } = require('discord-player');
 const Logger = require('./libs/logger-v5/logger.js');
+const { REPL_OWNER, REPL_SLUG } = process.env
 const dotenv = require('dotenv');
 const path = require('path');
+const config = require('./config.json');
 const fs = require("fs")
 // 載入環境變數
-dotenv.config();
 
 // 創建日誌記錄器
 const botLogger = new Logger('Bot', true, [], 8);
@@ -16,6 +17,20 @@ const processLogger = new Logger('Process', true, [], 8);
 // 启动日志
 botLogger.ok('Starting Bot');
 processLogger.ok('Starting Process');
+if(!REPL_OWNER || !REPL_SLUG){
+    dotenv.config();
+     processLogger.notice("Currently running on non-repl.it environment,using env file")
+}
+// Safety Check
+if(REPL_OWNER || REPL_SLUG && !process.env.t && config.bot.token !== "use-env" ) {
+    processLogger.error("不安全的環境")
+    processLogger.error("Unsafe Environment")
+    processLogger.fatal("請在環境變數中設置您的令牌")
+    processLogger.fatal("Please set your token in env variables")
+    processLogger.warn("為了避免您的token遭到有心人士盜用，我們建議您使用本地環境 請在cfg.json將token改成use-env")
+    processLogger.warn("To prevent your token got stealed,please use env variables in repl.it edit cfg.json and set token to use-env")
+    exit(1)
+}
 
 // 初始化 Discord 客戶端
 const bot = new Client({
@@ -74,6 +89,6 @@ bot.on("messageCreate",async (msg) => {
         c.execute(bot,msg,splited)
     }
 })
- 
-bot.login(process.env.t);
+
+bot.login(config.bot.token === "use-env" ? process.env.t : config.bot.token);
 // require("./plugins/onlineForever.js")

@@ -1,4 +1,8 @@
 {
+ "bot": {
+   "token-help": "Are you on repl.it? type use-env and add 't' in env ",
+   "token": "use-env"
+ },
  "plugins": [
    "onlineForever.js"
  ],

@@ -19,8 +19,8 @@ module.exports = {
   name: "Stop The Musics",
   description: "Stop The Music",
   aliases: ["stop"],
-  execute: async (msg,client,player) => {
-    const queue = player.nodes.get(msg.guildId); 
+  execute: async (bot, msg, args) => {
+    const queue = bot.player.nodes.get(msg.guildId); 
 
     if (queue  && msg.client.voice ) {
     queue.node.stop(); 

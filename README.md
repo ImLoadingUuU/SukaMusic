@@ -5,3 +5,4 @@ Powered by Discord-Player 6
 - Buggy Filter 很多錯誤的過濾器
 ## Latest Updates
 - Beautiful Console
+- Command Handler 
