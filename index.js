@@ -22,7 +22,7 @@ if(!REPL_OWNER || !REPL_SLUG){
      processLogger.notice("Currently running on non-repl.it environment,using env file")
 }
 // Safety Check
-if(REPL_OWNER || REPL_SLUG && !process.env.t && config.bot.token !== "use-env" ) {
+if(REPL_OWNER && REPL_SLUG && !process.env.t && config.bot.token !== "use-env" ) {
     processLogger.error("不安全的環境")
     processLogger.error("Unsafe Environment")
     processLogger.fatal("請在環境變數中設置您的令牌")
