@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const http =require('node:https');
 const fs = require('fs');
 function makeid(length) {

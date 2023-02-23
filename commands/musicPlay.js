@@ -69,8 +69,8 @@ module.exports = {
             embed.addFields(
                 {name: 'Album', value: item.albumCode, inline: true},
                 {name: 'Composer', value: item.composer.join(','), inline: true});
-            const m;
-            m = await msg.reply({
+
+            const m = await msg.reply({
               embeds: [embed],
             });
             Downloader.download(res.data.rows[0].audioUrl, `${bot.dir}/datastore/downloads`, async (path) => {

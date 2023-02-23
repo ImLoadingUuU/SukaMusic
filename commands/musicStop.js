@@ -6,18 +6,17 @@
 
 
 module.exports = {
-  name: "Stop The Musics",
-  description: "Stop The Music",
-  aliases: ["stop"],
+  name: 'Stop The Musics',
+  description: 'Stop The Music',
+  aliases: ['stop'],
   execute: async (bot, msg, args) => {
-    const queue = bot.player.nodes.get(msg.guildId); 
+    const queue = bot.player.nodes.get(msg.guildId);
 
-    if (queue  && msg.client.voice ) {
-    queue.node.delete(); 
-    msg.reply("滾")
-      }  else {
-        msg.reply("沒有在播放")
-      }
-
-  }
-}
+    if (queue && msg.client.voice ) {
+      queue.node.delete();
+      msg.reply('滾');
+    } else {
+      msg.reply('沒有在播放');
+    }
+  },
+};

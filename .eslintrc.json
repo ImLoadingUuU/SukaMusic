@@ -11,5 +11,9 @@
         "ecmaVersion": "latest"
     },
     "rules": {
+        "require-jsdoc" : 0,
+        "valid-jsdoc" : 0,
+        "max-len" : 0,
+        "prefer-rest-params" : 0
     }
 }

@@ -5,21 +5,18 @@
  */
 
 
-
-
 module.exports = {
-  name: "Skip The Musics",
-  description: "Skip The Music",
-  aliases: ["skip","跳過","不想聽了"],
+  name: 'Skip The Musics',
+  description: 'Skip The Music',
+  aliases: ['skip', '跳過', '不想聽了'],
   execute: async (bot, msg, args) => {
-    const queue = bot.player.nodes.get(msg.guildId); 
+    const queue = bot.player.nodes.get(msg.guildId);
 
-    if (queue  && msg.client.voice ) {
-    queue.node.skip(); 
-    msg.reply("跳過了傻逼")
-      }  else {
-        msg.reply("沒有在播放")
-      }
-
-  }
-}
+    if (queue && msg.client.voice ) {
+      queue.node.skip();
+      msg.reply('跳過了傻逼');
+    } else {
+      msg.reply('沒有在播放');
+    }
+  },
+};

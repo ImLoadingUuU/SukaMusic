@@ -30,6 +30,7 @@ f.createTrack = (json, filePath) => {
   if (!filePath) {
     return;
   }
+  // eslint-disable-next-line no-unused-vars
   const track = new Track(player, {
     title: json.trackTitle, // title
     url: json.audioUrl, // display url
