@@ -63,8 +63,12 @@ module.exports ={
               queue.filters.ffmpeg.toggle(['karaoke']);
               end()
               break;
+            case "lofi" || "lo-fi" || "lf" || "低傳真":
+              queue.filters.ffmpeg.toggle(['lofi']);
+              end()
+              break;
             default:
-              msg.reply("沒有這個過濾器")
+              await prevMessage.edit("沒有這個過濾器")
               break;
     
           }

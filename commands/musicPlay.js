@@ -7,9 +7,9 @@
  */
 const axios = require("axios")
 const {QueryType} = require("discord-player")
-const { constant_types } = require('fengari/src/defs.js')
 const Downloader = require("../libs/core/downloader.js")
-
+const { EmbedBuilder } = require("discord.js")
+ 
 module.exports = {
   name: "播放",
   description: "播放音樂",
@@ -58,13 +58,28 @@ module.exports = {
             if (!res.data.rows[0]) {
               return msg.reply("沒有這首歌在APM")
             }
+            let item = res.data.rows[0]
             console.log(res.data.rows[0].audioUrl)
             //  player.play(msg.member.voice.channel, res.data.rows[0].audioUrl,{  searchEngine: QueryType.AUTO,})
-            
+            let embed = new EmbedBuilder()
+            embed.setTitle("APM Music")
+            embed.setDescription("Downloading")
+            embed.setColor("#006d8f");
+            embed.setImage(item.albumArtLargeUrl)
+            embed.addFields(
+              {name: 'Album', value: item.albumCode, inline: true},
+            { name: 'Composer', value: item.composer.join(","),inline: true},)
+            let m 
+            m =  await msg.reply({
+              embeds: [embed]
+            })
             Downloader.download(res.data.rows[0].audioUrl, `${bot.dir}/datastore/downloads`, async (path) => {
-              msg.reply("Downloaded...")
+              embed.setDescription("Downloaded")
+            await  m.edit({
+                embeds: [embed]
+              })
               console.log(path)
-              await player.play(msg.member.voice.channel, `${path}`,{searchEngine: QueryType.FILE});
+               player.play(msg.member.voice.channel, path,{searchEngine: QueryType.FILE});
             })
             
           })

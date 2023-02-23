@@ -39,7 +39,7 @@ if(REPL_OWNER && REPL_SLUG && !process.env.t && config.bot.token !== "use-env" )
     processLogger.fatal("Please set your token in env variables")
     processLogger.warn("為了避免您的token遭到有心人士盜用，我們建議您使用本地環境 請在cfg.json將token改成use-env")
     processLogger.warn("To prevent your token got stealed,please use env variables in repl.it edit cfg.json and set token to use-env")
-    exit(1)
+    process.exit(1)
 }
 
 // 初始化 Discord 客戶端
@@ -58,7 +58,7 @@ const bot = new Client({
 });
 
 // 初始化音频播放器
-const player = new Player(bot);
+const player = new Player(bot,{ queryCache: null });
 
 // 設置客戶端的變量
 bot.commands = new Collection();
@@ -66,13 +66,14 @@ bot.player = player;
 bot.botLog = botLogger;
 bot.processLog = processLogger;
 bot.dir = __dirname;
+bot.lang = "us"
 // 监听 ready 事件，表示客户端已准备好
 bot.on('ready', async () => {
   bot.botLog.ok(`Logged in as ${bot.user.tag}`);
 });
 
 const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync(commandsPath).filter(file => /\.(js|ts)$/)
 
 for (const file of commandFiles) {
 	const filePath = path.join(commandsPath, file);
