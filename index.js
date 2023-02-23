@@ -18,6 +18,15 @@ const processLogger = new Logger('Process', true, [], 8);
 // 启动日志
 botLogger.ok('Starting Bot');
 processLogger.ok('Starting Process');
+processLogger.info('Clearing Cache');
+fs.readdirSync("./datastore/downloads").forEach((file) => {
+  fs.rm(`./datastore/downloads/${file}`, (err) => {
+    if(err) {
+      processLogger.error(err)
+      processLogger.error("Failed to clear cache " + file)
+    }
+  })
+})
 if(!REPL_OWNER || !REPL_SLUG){
     dotenv.config();
      processLogger.notice("Currently running on non-repl.it environment,using env file")

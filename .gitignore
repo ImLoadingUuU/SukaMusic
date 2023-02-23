@@ -2,5 +2,7 @@ node_modules
 yarn.lock
 package-lock.json
 .DS_Store
-*/.DS_Store
+*.DS_Store
 .env
+hardTest.mp3
+datastore/downloads/*

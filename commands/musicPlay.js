@@ -6,8 +6,9 @@
  * @param {import('discord-player').Player} player - Discord Player 播放器对象
  */
 const axios = require("axios")
-
-
+const {QueryType} = require("discord-player")
+const { constant_types } = require('fengari/src/defs.js')
+const Downloader = require("../libs/core/downloader.js")
 
 module.exports = {
   name: "播放",
@@ -25,6 +26,7 @@ module.exports = {
       try {
         if(!sliced[1].startsWith("apm:")) {
           const res = await player.play(msg.member.voice.channel, args.slice(1).join(" "), {
+          
             nodeOptions: {
               metadata: {
                 channel: msg.member.voice.channel
@@ -40,8 +42,8 @@ module.exports = {
         }
         // sliced[1].startsWith("apm:")
         // no working until v6 fixed
-        if (false) {
-          let query = msg.content.slice(2).slice(5)
+        if (sliced[1].startsWith("apm:")) {
+          let query = args.slice(1).join(" ").slice(4)
           console.log(query)
           axios({
             method: "POST",
@@ -53,11 +55,18 @@ module.exports = {
             },
             data: { "limit": 25, "offset": 0, "sort": "relevancy_base", "terms": [{ "type": "text", "field": ["tags", "track_title", "track_description", "album_title", "album_description", "sound_alikes", "lyrics", "library", "composer"], "value": query, "operation": "must" }] }
           }).then(async (res) => {
-            if (!res.data.rows[0].audioUrl) {
+            if (!res.data.rows[0]) {
               return msg.reply("沒有這首歌在APM")
             }
             console.log(res.data.rows[0].audioUrl)
-            await player.play(msg.member.voice.channel, res.data.rows[0].audioUrl);
+            //  player.play(msg.member.voice.channel, res.data.rows[0].audioUrl,{  searchEngine: QueryType.AUTO,})
+            
+            Downloader.download(res.data.rows[0].audioUrl, `${bot.dir}/datastore/downloads`, async (path) => {
+              msg.reply("Downloaded...")
+              console.log(path)
+              await player.play(msg.member.voice.channel, `${path}`,{searchEngine: QueryType.FILE});
+            })
+            
           })
         }
       } catch (e) {
