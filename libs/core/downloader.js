@@ -32,13 +32,19 @@ f.download = async (url, downloadPath, onDownloaded) => {
         onDownloaded(`${downloadPath}/${id}.mp3`);
       });
       file.on('error', () => {
-        onDownloaded('./audio/failed.mp3');
+        console.error('Error');
       });
     }).on('error', () => {
       file.close();
     });
-  } catch {
+   
+  } catch(err) {
     console.log('Error');
+    console.error(`
+    Downloader Error
+    =======================
+    ${err}
+    `)
   }
 };
 module.exports = f;

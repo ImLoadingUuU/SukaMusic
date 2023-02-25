@@ -18,6 +18,7 @@ class Logger {
 
   /**
    * @description 多用於提示用戶, 進程正常
+   * @return 回覆訊息
    */
   ok() {
     return this.log(this.caller, arguments, 'OK', chalk.greenBright);
